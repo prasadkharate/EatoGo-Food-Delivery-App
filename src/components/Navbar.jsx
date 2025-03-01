@@ -22,7 +22,7 @@ function Navbar() {
       boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
     }}>
       <Link to="/" style={{ fontSize: '24px', fontWeight: 'bold', textDecoration: 'none', color: 'white' }}>
-        Zomato Clone
+      EatoGo
       </Link>
       <div>
         <Link to="/" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Home</Link>
