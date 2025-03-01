@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
+import api from '../api';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -9,23 +9,18 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-      const { data } = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const { data } = await api.post('/auth/login', { email, password });
       localStorage.setItem('token', data.token);
-      navigate(data.isAdmin ? '/admin' : '/');
+      if (data.role === 'admin') navigate('/admin');
+      else if (data.role === 'owner') navigate('/owner');
+      else navigate('/');
     } catch (err) {
       alert('Login failed');
     }
   };
 
   return (
-    <div style={{
-      padding: '20px',
-      maxWidth: '400px',
-      margin: '50px auto',
-      border: '1px solid #ddd',
-      borderRadius: '10px',
-      boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-    }}>
+    <div style={{ padding: '20px', maxWidth: '400px', margin: '50px auto', border: '1px solid #ddd', borderRadius: '10px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
       <h1 style={{ fontSize: '24px', textAlign: 'center', marginBottom: '20px' }}>Login</h1>
       <input
         type="email"
@@ -47,9 +42,6 @@ function Login() {
       >
         Login
       </button>
-      <p style={{ textAlign: 'center', marginTop: '15px' }}>
-        Don’t have an account? <Link to="/register" style={{ color: '#ef4f5f', textDecoration: 'none' }}>Register</Link>
-      </p>
     </div>
   );
 }

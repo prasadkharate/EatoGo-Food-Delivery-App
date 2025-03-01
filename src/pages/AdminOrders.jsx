@@ -1,24 +1,29 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import OrderCard from '../components/OrderCard.jsx';
 
 function AdminOrders() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    axios.get('http://localhost:5000/api/orders', {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then(res => setOrders(res.data));
+    const fetchOrders = async () => {
+      try {
+        const { data } = await api.get('/orders');
+        setOrders(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchOrders();
   }, []);
 
   const updateStatus = async (id, status) => {
-    const token = localStorage.getItem('token');
-    const { data } = await axios.put(`http://localhost:5000/api/orders/${id}`, { status }, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    setOrders(orders.map(order => (order._id === id ? data : order)));
+    try {
+      const { data } = await api.put(`/orders/${id}`, { status });
+      setOrders(orders.map(order => (order._id === id ? data : order)));
+    } catch (err) {
+      alert('Failed to update status');
+    }
   };
 
   return (

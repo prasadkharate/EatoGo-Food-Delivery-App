@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 function Navbar() {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
-  const isAdmin = token && JSON.parse(atob(token.split('.')[1])).isAdmin;
+  const decoded = token ? JSON.parse(atob(token.split('.')[1])) : {};
+  const { role } = decoded;
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -27,11 +28,14 @@ function Navbar() {
         <Link to="/" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Home</Link>
         <Link to="/cart" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Cart</Link>
         <Link to="/orders" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Orders</Link>
-        {isAdmin && (
+        {role === 'admin' && (
           <>
             <Link to="/admin" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Admin</Link>
             <Link to="/admin/orders" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Admin Orders</Link>
           </>
+        )}
+        {role === 'owner' && (
+          <Link to="/owner" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Owner Dashboard</Link>
         )}
         {token ? (
           <button onClick={handleLogout} style={{ background: 'white', color: '#ef4f5f', border: 'none', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer' }}>
@@ -40,7 +44,7 @@ function Navbar() {
         ) : (
           <>
             <Link to="/login" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Login</Link>
-            <Link to="/register" style={{ color: 'white', textDecoration: 'none' }}>Register</Link> {/* Added Register link */}
+            <Link to="/register" style={{ color: 'white', textDecoration: 'none' }}>Register</Link>
           </>
         )}
       </div>

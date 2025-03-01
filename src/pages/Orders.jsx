@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import OrderCard from '../components/OrderCard.jsx';
 
 function Orders() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) return;
-    axios.get('http://localhost:5000/api/orders', {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then(res => setOrders(res.data));
+    const fetchOrders = async () => {
+      try {
+        const { data } = await api.get('/orders');
+        setOrders(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchOrders();
   }, []);
 
   return (

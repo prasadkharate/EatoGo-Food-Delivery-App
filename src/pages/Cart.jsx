@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 
 function Cart() {
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart') || '[]'));
@@ -24,14 +24,17 @@ function Cart() {
     const token = localStorage.getItem('token');
     if (!token) return alert('Please login first');
     const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    await axios.post(
-      'http://localhost:5000/api/orders',
-      { items: cart.map(item => ({ foodId: item._id, quantity: item.quantity })), total },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    localStorage.removeItem('cart');
-    setCart([]);
-    navigate('/orders');
+    try {
+      await api.post('/orders', {
+        items: cart.map(item => ({ foodId: item._id, quantity: item.quantity })),
+        total,
+      });
+      localStorage.removeItem('cart');
+      setCart([]);
+      navigate('/orders');
+    } catch (err) {
+      alert('Order placement failed');
+    }
   };
 
   return (
@@ -42,12 +45,7 @@ function Cart() {
       ) : (
         <div>
           {cart.map(item => (
-            <div key={item._id} style={{
-              display: 'flex',
-              alignItems: 'center',
-              borderBottom: '1px solid #ddd',
-              padding: '15px 0',
-            }}>
+            <div key={item._id} style={{ display: 'flex', alignItems: 'center', borderBottom: '1px solid #ddd', padding: '15px 0' }}>
               <img src={item.image} alt={item.name} style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '10px' }} />
               <div style={{ flex: 1, marginLeft: '15px' }}>
                 <h3 style={{ margin: '0' }}>{item.name}</h3>

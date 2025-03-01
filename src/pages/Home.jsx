@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import FoodCard from '../components/FoodCard.jsx';
+import api from '../api';
 
 function Home() {
   const [restaurants, setRestaurants] = useState([]);
 
   useEffect(() => {
-    // Mock data or fetch from API
-    setRestaurants([
-      { id: 1, name: 'Tasty Bites', image: 'https://via.placeholder.com/300x200', cuisine: 'Italian' },
-      { id: 2, name: 'Spice Haven', image: 'https://via.placeholder.com/300x200', cuisine: 'Indian' },
-    ]);
+    const fetchRestaurants = async () => {
+      try {
+        const { data } = await api.get('/restaurants');
+        setRestaurants(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchRestaurants();
   }, []);
 
   return (
@@ -19,7 +22,7 @@ function Home() {
       <h1 style={{ fontSize: '32px', marginBottom: '20px', color: '#333' }}>Order Food Online</h1>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
         {restaurants.map(restaurant => (
-          <Link to={`/restaurant/${restaurant.id}`} key={restaurant.id} style={{ textDecoration: 'none' }}>
+          <Link to={`/restaurant/${restaurant._id}`} key={restaurant._id} style={{ textDecoration: 'none' }}>
             <div style={{
               border: '1px solid #ddd',
               borderRadius: '10px',
@@ -30,7 +33,7 @@ function Home() {
               <img src={restaurant.image} alt={restaurant.name} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
               <div style={{ padding: '15px' }}>
                 <h2 style={{ fontSize: '20px', margin: '0' }}>{restaurant.name}</h2>
-                <p style={{ color: '#666' }}>{restaurant.cuisine}</p>
+                <p style={{ color: '#666' }}>{restaurant.description}</p>
               </div>
             </div>
           </Link>

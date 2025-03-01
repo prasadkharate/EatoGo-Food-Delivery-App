@@ -6,9 +6,10 @@ import RestaurantMenu from './pages/RestaurantMenu.jsx';
 import Cart from './pages/Cart.jsx';
 import Orders from './pages/Orders.jsx';
 import Login from './pages/Login.jsx';
-import Register from './pages/Register.jsx'; // Added Register import
+import Register from './pages/Register.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 import AdminOrders from './pages/AdminOrders.jsx';
+import OwnerDashboard from './pages/OwnerDashboard.jsx'; // Added
 
 function App() {
   return (
@@ -21,9 +22,10 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} /> {/* Added Register route */}
+          <Route path="/register" element={<Register />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/orders" element={<AdminOrders />} />
+          <Route path="/owner" element={<OwnerDashboard />} /> {/* Added */}
         </Routes>
       </div>
       <Footer />
