@@ -6,6 +6,7 @@ import RestaurantMenu from './pages/RestaurantMenu.jsx';
 import Cart from './pages/Cart.jsx';
 import Orders from './pages/Orders.jsx';
 import Login from './pages/Login.jsx';
+import Register from './pages/Register.jsx'; // Added Register import
 import AdminDashboard from './pages/AdminDashboard.jsx';
 import AdminOrders from './pages/AdminOrders.jsx';
 
@@ -20,6 +21,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} /> {/* Added Register route */}
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/orders" element={<AdminOrders />} />
         </Routes>

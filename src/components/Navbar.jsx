@@ -21,7 +21,7 @@ function Navbar() {
       boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
     }}>
       <Link to="/" style={{ fontSize: '24px', fontWeight: 'bold', textDecoration: 'none', color: 'white' }}>
-      EatoGo
+        Zomato Clone
       </Link>
       <div>
         <Link to="/" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Home</Link>
@@ -38,7 +38,10 @@ function Navbar() {
             Logout
           </button>
         ) : (
-          <Link to="/login" style={{ color: 'white', textDecoration: 'none' }}>Login</Link>
+          <>
+            <Link to="/login" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Login</Link>
+            <Link to="/register" style={{ color: 'white', textDecoration: 'none' }}>Register</Link> {/* Added Register link */}
+          </>
         )}
       </div>
     </nav>
