@@ -20,9 +20,9 @@ function Cart() {
     localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
 
-  const placeOrder = async () => {
+  const checkout = async () => {
     const token = localStorage.getItem('token');
-    if (!token) return alert('Please login first');
+    if (!token) return alert('Please login to checkout');
     const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
     try {
       await api.post('/orders', {
@@ -31,9 +31,10 @@ function Cart() {
       });
       localStorage.removeItem('cart');
       setCart([]);
-      navigate('/orders');
+      alert('Order placed successfully!');
+      navigate('/');
     } catch (err) {
-      alert('Order placement failed');
+      alert('Checkout failed');
     }
   };
 
@@ -70,10 +71,10 @@ function Cart() {
               Total: ₹{cart.reduce((sum, item) => sum + item.price * item.quantity, 0)}
             </p>
             <button
-              onClick={placeOrder}
+              onClick={checkout}
               style={{ background: '#ef4f5f', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer' }}
             >
-              Place Order
+              Checkout
             </button>
           </div>
         </div>

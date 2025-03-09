@@ -1,10 +1,22 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 function Navbar() {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   const decoded = token ? JSON.parse(atob(token.split('.')[1])) : {};
   const { role } = decoded;
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    const updateCartCount = () => {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      setCartCount(cart.reduce((sum, item) => sum + item.quantity, 0));
+    };
+    updateCartCount();
+    window.addEventListener('storage', updateCartCount);
+    return () => window.removeEventListener('storage', updateCartCount);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -22,12 +34,13 @@ function Navbar() {
       boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
     }}>
       <Link to="/" style={{ fontSize: '24px', fontWeight: 'bold', textDecoration: 'none', color: 'white' }}>
-      EatoGo
+        Zomato Clone
       </Link>
       <div>
         <Link to="/" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Home</Link>
-        <Link to="/cart" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Cart</Link>
-        <Link to="/orders" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Orders</Link>
+        <Link to="/cart" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>
+          Cart ({cartCount})
+        </Link>
         {role === 'admin' && (
           <>
             <Link to="/admin" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Admin</Link>
@@ -36,6 +49,12 @@ function Navbar() {
         )}
         {role === 'owner' && (
           <Link to="/owner" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Owner Dashboard</Link>
+        )}
+        {role === 'banner-manager' && (
+          <Link to="/banner-manager" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Banner Manager</Link>
+        )}
+        {role === 'developer' && (
+          <Link to="/developer" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Developer Dashboard</Link>
         )}
         {token ? (
           <button onClick={handleLogout} style={{ background: 'white', color: '#ef4f5f', border: 'none', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer' }}>

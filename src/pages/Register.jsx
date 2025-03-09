@@ -8,8 +8,8 @@ function Register() {
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('customer');
   const [restaurantName, setRestaurantName] = useState('');
-  const [restaurantDescription, setRestaurantDescription] = useState('');
   const [restaurantImage, setRestaurantImage] = useState('');
+
   const navigate = useNavigate();
 
   const handleRegister = async () => {
@@ -20,14 +20,13 @@ function Register() {
           return alert('Restaurant name and image are required');
         }
         payload.restaurantName = restaurantName;
-        payload.restaurantDescription = restaurantDescription;
         payload.restaurantImage = restaurantImage;
       }
       await api.post('/auth/register', payload);
       alert('Registration successful! Please login.');
       navigate('/login');
     } catch (err) {
-      alert('Registration failed');
+      alert(err.response?.data?.message || 'Registration failed');
     }
   };
 
@@ -62,6 +61,7 @@ function Register() {
       >
         <option value="customer">Customer</option>
         <option value="owner">Restaurant Owner</option>
+        <option value="developer">Developer</option> {/* Added */}
       </select>
       {role === 'owner' && (
         <>
@@ -70,13 +70,6 @@ function Register() {
             value={restaurantName}
             onChange={e => setRestaurantName(e.target.value)}
             placeholder="Restaurant Name"
-            style={{ width: '100%', padding: '10px', marginBottom: '15px', borderRadius: '5px', border: '1px solid #ddd' }}
-          />
-          <input
-            type="text"
-            value={restaurantDescription}
-            onChange={e => setRestaurantDescription(e.target.value)}
-            placeholder="Restaurant Description (optional)"
             style={{ width: '100%', padding: '10px', marginBottom: '15px', borderRadius: '5px', border: '1px solid #ddd' }}
           />
           <input

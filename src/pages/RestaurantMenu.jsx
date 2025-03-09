@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import api from '../api';
 import FoodCard from '../components/FoodCard.jsx';
 
 function RestaurantMenu() {
-  const { id } = useParams(); // Restaurant ID from URL
+  const { id } = useParams(); // Restaurant ID
   const [foods, setFoods] = useState([]);
   const [restaurant, setRestaurant] = useState(null);
 
@@ -41,7 +41,17 @@ function RestaurantMenu() {
       <h1 style={{ fontSize: '28px', marginBottom: '20px' }}>{restaurant?.name || 'Restaurant Menu'}</h1>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
         {foods.map(food => (
-          <FoodCard key={food._id} food={food} onAddToCart={addToCart} />
+          <div key={food._id}>
+            <Link to={`/item/${food._id}`} style={{ textDecoration: 'none' }}>
+              <FoodCard food={food} onAddToCart={() => {}} /> {/* No add-to-cart here */}
+            </Link>
+            <button
+              onClick={() => addToCart(food)}
+              style={{ marginTop: '10px', background: '#ef4f5f', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer' }}
+            >
+              Add to Cart
+            </button>
+          </div>
         ))}
       </div>
     </div>

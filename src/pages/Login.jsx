@@ -9,12 +9,17 @@ function Login() {
 
   const handleLogin = async () => {
     try {
+      console.log('Logging in with:', { email, password });
       const { data } = await api.post('/auth/login', { email, password });
+      console.log('Login response:', data);
       localStorage.setItem('token', data.token);
       if (data.role === 'admin') navigate('/admin');
       else if (data.role === 'owner') navigate('/owner');
+      else if (data.role === 'banner-manager') navigate('/banner-manager');
+      else if (data.role === 'developer') navigate('/developer'); // Added
       else navigate('/');
     } catch (err) {
+      console.log('Login error:', err.response?.data || err);
       alert('Login failed');
     }
   };
