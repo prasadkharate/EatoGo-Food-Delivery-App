@@ -56,23 +56,11 @@ function Home() {
         <Slider {...settings}>
           {banners.map(banner => (
             <div key={banner._id}>
-              <div
-                style={{
-                  backgroundColor: banner.bgColor,
-                  padding: '20px',
-                  borderRadius: '10px',
-                  height: '200px', // Increased height for images
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <img
-                  src={banner.image}
-                  alt="Banner"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '10px' }}
-                />
-              </div>
+              <img
+                src={banner.image}
+                alt="Banner"
+                style={{ width: '100%', height: '300px', objectFit: 'cover' }} // Increased height, no border
+              />
             </div>
           ))}
         </Slider>

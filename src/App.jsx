@@ -9,7 +9,9 @@ import AdminDashboard from './pages/AdminDashboard.jsx';
 import AdminOrders from './pages/AdminOrders.jsx';
 import OwnerDashboard from './pages/OwnerDashboard.jsx';
 import BannerManagerDashboard from './pages/BannerManagerDashboard.jsx';
-import DeveloperDashboard from './pages/DeveloperDashboard.jsx'; // Added
+import DeveloperDashboard from './pages/DeveloperDashboard.jsx';
+import Profile from './pages/Profile.jsx'; // Added
+import EditProfile from './pages/EditProfile.jsx'; // Added
 
 function App() {
   return (
@@ -25,7 +27,9 @@ function App() {
           <Route path="/admin/orders" element={<AdminOrders />} />
           <Route path="/owner" element={<OwnerDashboard />} />
           <Route path="/banner-manager" element={<BannerManagerDashboard />} />
-          <Route path="/developer" element={<DeveloperDashboard />} /> {/* Added */}
+          <Route path="/developer" element={<DeveloperDashboard />} />
+          <Route path="/profile" element={<Profile />} /> {/* Added */}
+          <Route path="/profile/edit" element={<EditProfile />} /> {/* Added */}
         </Routes>
       </div>
       <Footer />

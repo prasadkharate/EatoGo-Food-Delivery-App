@@ -5,8 +5,9 @@ function Navbar() {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   const decoded = token ? JSON.parse(atob(token.split('.')[1])) : {};
-  const { role } = decoded;
+  const { role, name } = decoded; // Added name from token
   const [cartCount, setCartCount] = useState(0);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   useEffect(() => {
     const updateCartCount = () => {
@@ -34,9 +35,9 @@ function Navbar() {
       boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
     }}>
       <Link to="/" style={{ fontSize: '24px', fontWeight: 'bold', textDecoration: 'none', color: 'white' }}>
-        Zomato Clone
+        EatGo Food Delivery
       </Link>
-      <div>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         <Link to="/" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Home</Link>
         <Link to="/cart" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>
           Cart ({cartCount})
@@ -57,9 +58,39 @@ function Navbar() {
           <Link to="/developer" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Developer Dashboard</Link>
         )}
         {token ? (
-          <button onClick={handleLogout} style={{ background: 'white', color: '#ef4f5f', border: 'none', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer' }}>
-            Logout
-          </button>
+          <div style={{ position: 'relative' }}>
+            <button
+              onClick={() => setIsProfileOpen(!isProfileOpen)}
+              style={{ background: 'none', color: 'white', border: 'none', cursor: 'pointer', fontSize: '16px' }}
+            >
+              {name || 'Profile'} ▼
+            </button>
+            {isProfileOpen && (
+              <div style={{
+                position: 'absolute',
+                right: 0,
+                top: '100%',
+                background: 'white',
+                color: '#333',
+                borderRadius: '5px',
+                boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+                minWidth: '150px',
+              }}>
+                <Link to="/profile" style={{ display: 'block', padding: '10px', textDecoration: 'none', color: '#333' }}>
+                  View Profile
+                </Link>
+                <Link to="/profile/edit" style={{ display: 'block', padding: '10px', textDecoration: 'none', color: '#333' }}>
+                  Edit Profile
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  style={{ display: 'block', width: '100%', padding: '10px', background: '#ef4f5f', color: 'white', border: 'none', cursor: 'pointer' }}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
         ) : (
           <>
             <Link to="/login" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Login</Link>
